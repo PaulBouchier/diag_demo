@@ -48,21 +48,10 @@ DiagDemo::DiagDemo(ros::NodeHandle nh, ros::NodeHandle nh_priv) :
     nh_(nh),
     nh_priv_(nh_priv),
     hw_sim_rate_(100),
-    min_gps_rate_(0.5),
-    max_gps_rate_(10),
-    gps_sim_delay_(0),
-    gps_pkts_sent_(0),
-    gps_pkts_dropped(0),
-    num_sats_(0),
-    hw_sim_time_(0),
     x_(0.0),
     sin_val_(0.0),
-    gps_freq_status_(diagnostic_updater::FrequencyStatusParam(&min_gps_rate_, &max_gps_rate_, 0.1, 10))
+    gps_sim_(nh, nh_priv)
 {
-    gps_updater_.setHardwareID("GPS");
-    gps_updater_.add("GPS Diag Status", this, &DiagDemo::getGPSDiagStatus);
-    gps_updater_.add(gps_freq_status_); // add the frequency reporting task
-
 }
 
 void DiagDemo::generateHwSimData()
@@ -72,43 +61,11 @@ void DiagDemo::generateHwSimData()
         sin_val_ = sin(x_);
         x_ += 0.002;
 
+        gps_sim_.simulateGPS(sin_val_);
+
         hw_sim_rate_.sleep();
     }
 }
-
-void DiagDemo::simulateGPS()
-{
-    if (gps_sim_delay_ > 20)
-    {
-        gps_sim_delay_ = 0;
-
-        if (sin_val_ > 0)
-        {
-            // diagnostics for publishing gps data with occasional dropouts
-            std::cout << "Emitting GPS data\n";
-            gps_pkts_sent++;
-            gps_freq_status_.tick();
-        }
-        else
-        {
-            gps_pkts_dropped++;
-        }
-        // Set number of satellites to vary between 0 & 10
-        num_sats_ = static_cast<int>((sin_val_ + 1) * 5);
-    }
-    else
-    {
-        gps_sim_delay_++;
-    }
-
-    gps_updater_.update();
-}
-
-void DiagDemo::getGPSDiagStatus(diagnostic_updater::DiagnosticStatusWrapper& gps_diag_status )
-{
-    
-}
-
 
 }   // namespace
 

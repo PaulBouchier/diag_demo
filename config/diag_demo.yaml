@@ -1,0 +1,8 @@
+pub_rate: 1.0
+analyzers:
+  GPS:
+    type: GenericAnalyzer
+    path: 'GPS'
+    timeout: 5.0
+    contains: ['gps_updater']
+

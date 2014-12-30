@@ -38,6 +38,8 @@
 #ifndef DIAG_DEMO_H
 #define DIAG_DEMO_H
 
+#include "diag_demo/gps_simulator.h"
+
 #include <ros/ros.h>
 #include <ros/rate.h>
 
@@ -57,26 +59,13 @@ public:
     void generateHwSimData();
 
 private:
-    void simulateGPS();
-
     ros::NodeHandle nh_;
     ros::NodeHandle nh_priv_;
     ros::Rate hw_sim_rate_;
 
-    diagnostic_updater::Updater gps_updater_;   //!< Update at rate set by parameter 
-    diagnostic_updater::FrequencyStatus gps_freq_status_;
-    void getGPSDiagStatus( diagnostic_updater::DiagnosticStatusWrapper& gps_diag_status );
-    double min_gps_rate_;
-    double max_gps_rate_;
-    int gps_sim_delay_;
-    int gps_pkts_sent_;
-    int gps_pkts_dropped_;
-    int num_sats_;
-
-    double hw_sim_time_;
-
     double x_;
     double sin_val_;
+    GPSSimulator gps_sim_;
 };
 
 
