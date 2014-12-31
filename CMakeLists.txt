@@ -106,7 +106,6 @@ include_directories(include
 
 ## Declare a cpp executable
 add_executable(diag_demo src/diag_demo.cpp)
-add_executable(example src/example.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -114,9 +113,6 @@ add_executable(example src/example.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(diag_demo
-   ${catkin_LIBRARIES}
-)
-target_link_libraries(example
    ${catkin_LIBRARIES}
 )
 #############
@@ -134,7 +130,7 @@ target_link_libraries(example
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS diag_demo example
+# install(TARGETS diag_demo
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

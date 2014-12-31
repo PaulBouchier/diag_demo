@@ -1,8 +1,0 @@
-pub_rate: 1.0
-analyzers:
-  example:
-    type: GenericAnalyzer
-    path: 'Example System'
-    timeout: 5.0
-    contains: ['example']
-

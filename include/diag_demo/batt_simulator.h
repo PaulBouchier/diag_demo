@@ -42,10 +42,6 @@
 #include <ros/rate.h>
 
 #include <diagnostic_updater/diagnostic_updater.h>
-#include <diagnostic_updater/publisher.h>
-#include <diagnostic_updater/update_functions.h>
-
-#include <boost/thread.hpp>
 
 namespace diag_demo
 {
