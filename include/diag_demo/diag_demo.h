@@ -40,6 +40,7 @@
 
 #include "diag_demo/gps_simulator.h"
 #include "diag_demo/batt_simulator.h"
+#include "diag_demo/camera_simulator.h"
 
 #include <ros/ros.h>
 #include <ros/rate.h>
@@ -64,6 +65,7 @@ private:
     double sin_val_;
     GPSSimulator gps_sim_;
     BattSimulator batt_sim_;
+    CameraSimulator cam_sim_;
 };
 
 

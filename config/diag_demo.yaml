@@ -10,4 +10,9 @@ analyzers:
     path: 'Battery'
     timeout: 5.0
     contains: ['batt_updater']
+  Camera:
+    type: diagnostic_aggregator/GenericAnalyzer
+    path: 'Camera'
+    timeout: 5.0
+    contains: ['camera_updater']
 

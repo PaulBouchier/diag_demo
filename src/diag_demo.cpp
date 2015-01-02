@@ -51,7 +51,8 @@ DiagDemo::DiagDemo(ros::NodeHandle nh, ros::NodeHandle nh_priv) :
     x_(0.0),
     sin_val_(0.0),
     gps_sim_(nh, nh_priv),
-    batt_sim_(nh, nh_priv)
+    batt_sim_(nh, nh_priv),
+    cam_sim_(nh, nh_priv)
 {
     std::cout << "Constructed DiagDemo\n";
 }
@@ -65,6 +66,7 @@ void DiagDemo::generateHwSimData()
 
         gps_sim_.simulateGPS(sin_val_);
         batt_sim_.simulateBatt(sin_val_);
+        cam_sim_.simulateCamera(sin_val_);
 
         hw_sim_rate_.sleep();
     }

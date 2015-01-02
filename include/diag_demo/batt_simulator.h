@@ -57,11 +57,13 @@ private:
     void getBattChargeStatus(diagnostic_updater::DiagnosticStatusWrapper& batt_charge_status);
     int batt_sim_delay_;
     double batt_charge_;
+    double prev_batt_charge_;
 };
 
 BattSimulator::BattSimulator(ros::NodeHandle nh, ros::NodeHandle nh_priv) :
     batt_sim_delay_(0),
     batt_charge_(100),
+    prev_batt_charge_(100),
     batt_updater_(nh, nh_priv, std::string(" batt_updater"))
 {
     batt_updater_.setHardwareID("Battery");
@@ -75,6 +77,11 @@ void BattSimulator::simulateBatt(double sin_val)
     {
         batt_sim_delay_ = 0;
         batt_charge_ = (sin_val + 1) * 50;
+        if (batt_charge_ < prev_batt_charge_ && batt_charge_ < 10.0)
+        {
+            ROS_WARN("Battery charge just dropped below 10 percent");
+        }
+        prev_batt_charge_ = batt_charge_;
     }
     else
     {
