@@ -8,13 +8,19 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_updater
   roscpp
   std_msgs
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
+generate_dynamic_reconfigure_options (
+    cfg/Batt.cfg
+    cfg/Tutorials.cfg
+    )
+
 # Declare our catkin package.
-catkin_package()
+catkin_package( DEPENDS CATKIN DEPENDS dynamic_reconfigure)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -106,15 +112,16 @@ include_directories(include
 
 ## Declare a cpp executable
 add_executable(diag_demo src/diag_demo.cpp)
+add_executable(server src/server.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(diag_demo diag_demo_generate_messages_cpp)
+add_dependencies(diag_demo diag_demo_gencfg)
+add_dependencies(server diag_demo_gencfg)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(diag_demo
-   ${catkin_LIBRARIES}
-)
+target_link_libraries(diag_demo ${catkin_LIBRARIES})
+target_link_libraries(server ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############

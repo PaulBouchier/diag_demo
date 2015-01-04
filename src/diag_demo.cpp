@@ -37,8 +37,8 @@
 
 #include "diag_demo/diag_demo.h"
 
-
 #include <cstdlib>
+
 
 namespace diag_demo
 {
@@ -68,9 +68,11 @@ void DiagDemo::generateHwSimData()
         batt_sim_.simulateBatt(sin_val_);
         cam_sim_.simulateCamera(sin_val_);
 
+        ros::spinOnce();
         hw_sim_rate_.sleep();
     }
 }
+
 
 }   // namespace
 
@@ -89,6 +91,7 @@ int main( int argc, char *argv[] )
 	ros::NodeHandle nh_priv( "~" );
 
     diag_demo::DiagDemo diag_demo(nh, nh_priv);
+    ROS_INFO("Starting simulation");
     diag_demo.generateHwSimData();
 
     return 0;

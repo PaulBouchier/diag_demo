@@ -40,6 +40,8 @@
 
 #include <ros/ros.h>
 #include <ros/rate.h>
+#include <dynamic_reconfigure/server.h>
+#include <diag_demo/BattConfig.h>
 
 #include <diagnostic_updater/diagnostic_updater.h>
 
@@ -51,23 +53,36 @@ class BattSimulator
 public:
     BattSimulator(ros::NodeHandle nh, ros::NodeHandle nh_priv);
     void simulateBatt(double sin_val);
+    void config_cb(diag_demo::BattConfig &config, uint32_t level);
 
 private:
-    diagnostic_updater::Updater batt_updater_;   //!< Update at rate set by parameter 
-    void getBattChargeStatus(diagnostic_updater::DiagnosticStatusWrapper& batt_charge_status);
+    diagnostic_updater::Updater batt_updater_;
+    void getBattChargeStatus(
+        diagnostic_updater::DiagnosticStatusWrapper& batt_charge_status);
+
     int batt_sim_delay_;
     double batt_charge_;
     double prev_batt_charge_;
+    double batt_warning_charge_;
+
+    dynamic_reconfigure::Server<diag_demo::BattConfig> config_server;
+    dynamic_reconfigure::Server<diag_demo::BattConfig>::CallbackType f;
 };
 
 BattSimulator::BattSimulator(ros::NodeHandle nh, ros::NodeHandle nh_priv) :
     batt_sim_delay_(0),
     batt_charge_(100),
     prev_batt_charge_(100),
+    batt_warning_charge_(30.0),
     batt_updater_(nh, nh_priv, std::string(" batt_updater"))
 {
     batt_updater_.setHardwareID("Battery");
-    batt_updater_.add("Battery Charge Status", this, &BattSimulator::getBattChargeStatus);
+    batt_updater_.add("Battery Charge Status", this, 
+                        &BattSimulator::getBattChargeStatus);
+
+   f = boost::bind(&BattSimulator::config_cb, this, _1, _2);
+    config_server.setCallback(f);
+
     std::cout << "Constructed BattSimulator\n";
 }
 
@@ -77,11 +92,12 @@ void BattSimulator::simulateBatt(double sin_val)
     {
         batt_sim_delay_ = 0;
         batt_charge_ = (sin_val + 1) * 50;
-        if (batt_charge_ < prev_batt_charge_ && batt_charge_ < 10.0)
+        if (prev_batt_charge_ > 10.0 && batt_charge_ < 10.0)
         {
             ROS_WARN("Battery charge just dropped below 10 percent");
         }
         prev_batt_charge_ = batt_charge_;
+        ROS_DEBUG("simulating battery");
     }
     else
     {
@@ -93,15 +109,15 @@ void BattSimulator::simulateBatt(double sin_val)
 
 void BattSimulator::getBattChargeStatus(diagnostic_updater::DiagnosticStatusWrapper& batt_charge_status)
 {
-    if (batt_charge_ < 30.0)
-    {
-        batt_charge_status.summary( diagnostic_msgs::DiagnosticStatus::WARN, 
-                                "Battery charge below 30%" );
-    }
-    else if (batt_charge_ < 10.0)
+    if (batt_charge_ < 10.0)
     {
         batt_charge_status.summary( diagnostic_msgs::DiagnosticStatus::ERROR, 
                                 "Battery charge below 10%" );
+    }
+    else if (batt_charge_ < batt_warning_charge_)
+    {
+        batt_charge_status.summary( diagnostic_msgs::DiagnosticStatus::WARN, 
+                                "Battery charge below warning level" );
     }
     else
     {
@@ -109,6 +125,12 @@ void BattSimulator::getBattChargeStatus(diagnostic_updater::DiagnosticStatusWrap
                                 "Battery charge OK" );
     }
     batt_charge_status.add("Battery charge", batt_charge_);
+}
+
+void BattSimulator::config_cb(diag_demo::BattConfig &config, uint32_t level)
+{
+    batt_warning_charge_ = config.battery_warn_level;
+    ROS_INFO("Battery Warn level changed to: %lf", config.battery_warn_level);
 }
 
 } // namespace

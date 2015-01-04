@@ -60,7 +60,7 @@ private:
     ros::NodeHandle nh_;
     ros::NodeHandle nh_priv_;
     ros::Rate hw_sim_rate_;
-
+ 
     double x_;
     double sin_val_;
     GPSSimulator gps_sim_;
