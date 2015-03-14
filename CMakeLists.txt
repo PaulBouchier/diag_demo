@@ -16,7 +16,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_dynamic_reconfigure_options (
     cfg/Batt.cfg
-    cfg/Tutorials.cfg
     )
 
 # Declare our catkin package.
@@ -112,16 +111,13 @@ include_directories(include
 
 ## Declare a cpp executable
 add_executable(diag_demo src/diag_demo.cpp)
-add_executable(server src/server.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 add_dependencies(diag_demo diag_demo_gencfg)
-add_dependencies(server diag_demo_gencfg)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(diag_demo ${catkin_LIBRARIES})
-target_link_libraries(server ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############
