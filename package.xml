@@ -45,19 +45,20 @@
   <build_depend>sensor_msgs</build_depend>
   <build_depend>std_srvs</build_depend>
   <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>diagnostic_aggregator</build_depend>
+  <build_depend>pluginlib</build_depend>
+
   <run_depend>diagnostic_updater</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>sensor_msgs</run_depend>
   <run_depend>std_srvs</run_depend>
   <run_depend>dynamic_reconfigure</run_depend>
+  <run_depend>diagnostic_aggregator</run_depend>
+  <run_depend>pluginlib</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- You can specify that this package is a metapackage here: -->
-    <!-- <metapackage/> -->
-
-    <!-- Other tools can request additional information be placed here -->
-
+    <diagnostic_aggregator plugin="${prefix}/gps_battery_analyzer_plugin.xml" />
   </export>
 </package>

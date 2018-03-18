@@ -1,0 +1,7 @@
+<library path="lib/libgps_battery_analyzer" >
+  <class name="GpsBatteryAnalyzer" type="diagnostic_aggregator::GpsBatteryAnalyzer" base_class_type="diagnostic_aggregator::Analyzer">
+    <description>
+      GpsBatteryAnalyzer is a test-example of an anlyzer plugin
+    </description>
+  </class>
+</library>

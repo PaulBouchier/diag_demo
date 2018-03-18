@@ -1,0 +1,5 @@
+analyzers:
+  gps:
+    type: GpsBatteryAnalyzer
+    gps_name: GPS
+

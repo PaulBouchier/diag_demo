@@ -105,9 +105,9 @@ include_directories(include
 )
 
 ## Declare a cpp library
-# add_library(diag_demo
-#   src/${PROJECT_NAME}/diag_demo.cpp
-# )
+add_library(gps_battery_analyzer
+  src/gps_battery_analyzer.cpp
+)
 
 ## Declare a cpp executable
 add_executable(diag_demo src/diag_demo.cpp)

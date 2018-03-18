@@ -15,4 +15,7 @@ analyzers:
     path: 'Camera'
     timeout: 5.0
     contains: ['camera_updater']
+  GPS_Battery:
+    type: GpsBatteryAnalyzer
+    gps_name: 'gps_updater: GPS Diag Status'
 

@@ -1,0 +1,7 @@
+<launch>
+  <test pkg="diagnostic_aggregator" type="analyzer_loader"
+        name="loader" test-name="gps_battery_analyzer_load_test" >
+    <rosparam command="load" 
+              file="$(find diag_demo)/test/gps_battery_analyzer_load.yaml" />
+  </test>
+</launch>
