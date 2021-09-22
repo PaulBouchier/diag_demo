@@ -1,3 +1,4 @@
+#include <pluginlib/class_list_macros.h>
 #include "diag_demo/gps_battery_analyzer.h"
 #include "std_msgs/String.h"
 
@@ -8,8 +9,7 @@
 
 using namespace diagnostic_aggregator;
 
-PLUGINLIB_REGISTER_CLASS(GpsBatteryAnalyzer,  
-                         diagnostic_aggregator::GpsBatteryAnalyzer, 
+PLUGINLIB_EXPORT_CLASS(diagnostic_aggregator::GpsBatteryAnalyzer, 
                          diagnostic_aggregator::Analyzer)
 
 GpsBatteryAnalyzer::GpsBatteryAnalyzer() :
