@@ -6,6 +6,7 @@ project(diag_demo)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   diagnostic_updater
+  diagnostic_aggregator
   roscpp
   std_msgs
   dynamic_reconfigure
